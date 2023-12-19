@@ -1,0 +1,413 @@
+import sys
+import time
+import random
+
+# Variables
+diff_level = 'Hard'
+
+mental_health = 3
+build_up = 3
+game_progress = 3
+
+way = 0
+way1 = 0
+way2 = 0
+
+action1_1 = 0
+action1_2 = 0
+action1_3 = 0
+action2_1 = 0
+action2_2 = 0
+action3 = 0
+
+date_c = 0
+
+
+
+# Functions
+
+def input_check(variable_name, num_of_alternatives): # Input check
+    '''Takes an existing variable and rewrites it according to your input. If input is incorrect function warns you with a message consisting the number of alternatives.'''
+    while True:
+        try:
+            variable_name = int(input('Enter a number, Morty: '))
+        except ValueError:
+            print(f'Damn! Enter a positive integer from 1 to {num_of_alternatives}, Morty!')
+        else:
+            if variable_name < 1 or variable_name > num_of_alternatives:
+                print(f'Damn! Enter a positive integer from 1 to {num_of_alternatives}, Morty!')
+            else:
+                break
+    return variable_name
+
+def watch_grades(): # Grades
+    '''Check if the grades you have got are not more than 10 and cuts the tail. Then it shows all you have got.'''
+    global mental_health, build_up, game_progress
+    
+    time.sleep(3)
+    
+    if mental_health > 10: # Grading scale
+        mental_health = 10
+    elif mental_health < 0:
+        mental_health = 0
+    if build_up > 10:
+        build_up = 10
+    elif build_up < 0:
+        build_up = 0
+    if game_progress > 10:
+        game_progress = 10
+    elif game_progress < 0:
+        game_progress = 0
+        
+    print('','Your grades:', sep = '\n')
+    print('Mental health = ', mental_health)
+    print('Build up level = ', build_up)
+    print('Python game progress = ', game_progress)
+    print('Average grade = ', round(0.3 * mental_health + 0.3 * build_up + 0.4 * game_progress, 2))
+    
+    time.sleep(3)
+    
+    return mental_health, build_up, game_progress
+
+def print_sl(t, typing_speed): # Slow print
+    '''Making input printed slowly with random speed, letter by letter. Second function arguement is the parameter of the speed. '''
+    for l in t:
+        sys.stdout.write(l)
+        sys.stdout.flush()
+        time.sleep(random.random()*10.0/typing_speed)
+    print('')
+
+def hrd_lvl(): # Hard level randomizer
+    '''If the difficult level is set to hard, then this function generates and returns random integer 0 or 1. It will be used to randomize the negative results of some actions.'''
+    if diff_level.upper() == 'HARD':
+        return random.randint(0,1)
+    else:
+        return 0
+    
+# Action results
+
+def yoga():
+    global mental_health, build_up
+    mental_health -= 1
+    build_up -= 1
+    print('', 'Bad idea, Morty... You got stuck!', 'Mental health -1 as it is humiliating.', 'Build up -1', sep = '\n')
+    return mental_health, build_up
+
+def bed():
+    global mental_health, game_progress
+    mental_health += 3
+    x = hrd_lvl()
+    game_progress -= 1 + x
+    print('', 'Mental health +3!', f'Rick hates you doing this, {-(1+x)} to game progress...', sep = '\n')
+    return mental_health, game_progress
+
+def jerry():
+    global game_progress, mental_health
+    game_progress += 1
+    mental_health -= 1
+    print('', 'Rick is happy when Jerry is anoyed, he will help you with python project. But Jerry is your dad and you are a bit worried about him...', '+1 game progress', '-1 mental health', sep = '\n')
+    return game_progress, mental_health
+
+def seeds():
+    global game_progress, mental_health, build_up
+    game_progress += 3
+    x = hrd_lvl()
+    mental_health -= 1 + x
+    build_up -= 1
+    print('', 'You got the seeds, but at what cost... However, Rick is very happy, he will help you with your game!', 'Game progress +3!', f'Mental health {-(1+x)}', 'Build up -1', sep = '\n')
+    return game_progress, mental_health, build_up
+
+def arena():
+    global game_progress, mental_health, build_up
+    game_progress += 2
+    x = hrd_lvl()
+    mental_health -= 2 + x
+    build_up += 1
+    print('', 'Instead of watching gladiator fights you were a participant... Hurts actually, but Rick won his bet and he will help you with your project!', 'Game progress +2!', 'Build up +1', f'Mental health {-(2+x)}', sep = '\n') 
+    return game_progress, mental_health, build_up
+
+def pe_lesson():
+    global build_up, mental_health
+    build_up += 3
+    x = hrd_lvl()
+    mental_health -= 1 + x
+    print('', 'You have got 3/5 for the lesson, as always actually... But still better than 0! Basketball guy pooled of your shorts in front of everyone... Unlucky...', 'Build up +3, good job!', f'Mental health {-(1+x)}', sep = '\n')
+    return build_up, mental_health
+
+def skip_pe():
+    global mental_health
+    mental_health -= 1
+    print('', 'Your PE teacher caught you trying to skip lesson..', 'Mental health -1', sep = '\n')
+    return mental_health
+
+def first_date():
+    global date_c, mental_health
+    print_sl('\nWow! Looks like you are ready.', 80)
+    print_sl('You saw Jessica near by lockers, Morty.', 80)
+    print_sl('You came near by.', 80)
+    print_sl('You simply asked her for a date, Morty.', 80)
+    print_sl('She simply answered: "Yes, why not!".', 80)
+    print_sl('You simply woke up...', 80)
+    date_c = 1
+    time.sleep(3)
+    print_sl("\nDon't worry, at least you have practiced.\nJust -5 to mental health.\nEverything else is allright!\nDon't give up, try once more!", 300)
+    mental_health -= 5
+    return date_c, mental_health
+
+def therapy():
+    global mental_health, game_progress
+    mental_health += 4
+    game_progress -= 2 
+    print('', "You have worked on some of the problems of your development, and you fill better now, but Rick has gone crazy as he hates all this stuff about mental health...", 'Mental health +4', 'Game progress -2', sep = '\n')
+    return mental_health, game_progress
+
+def random_pill():
+    global mental_health, build_up, game_progress
+    x = random.randint(-3, 3)
+    mental_health += x
+    y = random.randint(-3, 3)
+    build_up += y
+    z = random.randint(-3, 3)
+    game_progress += z
+
+    print('', 'Wow, Morty!', 'This was, this was something, something...', 'RANDOM!', sep = '\n')
+
+    if x >= 0:
+        print(f'Mental health +{x}')
+    else:
+        print(f'Mental health {x}')
+    if y >= 0:
+        print(f'Build up +{y}')
+    else:
+        print(f'Build up {y}')
+    if z >= 0:
+        print(f'Game progress +{z}')
+    else:
+        print(f'Game progress {z}')
+        
+    return mental_health, build_up, game_progress
+
+def game_over():
+    print_sl('''
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣠⣴⣶⣶⣶⣶⣾⣿⣿⣶⣶⣶⣤⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣶⣿⣿⡿⠿⠛⠛⠋⠉⠉⠉⠉⠉⠉⠛⠛⠻⢿⣿⣿⣷⣦⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣴⣿⣿⠿⠛⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠙⠻⣿⣿⣶⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣾⣿⡿⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠻⣿⣿⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣾⣿⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣿⣿⣦⡀⠀⢀⣠⣤⣶⡄⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣼⣿⡿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⡶⠶⠛⠛⠋⠉⠉⠛⠛⠳⠶⢤⣄⡀⠀⠀⠀⠀⠀⠀⠀⣀⣨⣿⣿⣿⡿⠿⠛⠛⢿⣿⡀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⢠⣾⣿⠟⠀⠀⠀⠀⠀⠀⠀⠀⣀⣴⠞⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⢶⣄⣠⣤⣶⣶⡿⠿⠟⠛⠉⠁⢀⣀⠀⠀⠘⣿⣇⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⢠⣿⣿⠏⠀⠀⠀⠀⠀⠀⠀⣠⡾⠛⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⣴⣶⣾⣿⠿⠟⠋⠉⠀⢀⣀⣴⡴⣾⣿⣿⣿⣷⡄⠀⢹⣿⡄⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⢀⣾⣿⠇⠀⠀⠀⠀⠀⠀⠀⣴⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣤⣶⣾⣿⠿⠛⠋⠉⠀⠀⠀⢠⣶⣾⣿⣿⠿⠟⠃⢹⣿⡄⠈⣿⣧⠀⠀⣿⣧⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⣼⣿⡏⠀⠀⠀⠀⠀⠀⠀⣼⠋⠀⠀⠀⢀⣀⣤⣤⣶⣾⡿⠿⠛⠛⠉⠁⢀⣤⣤⣄⠸⣿⣆⠀⠸⣿⡇⢿⣧⠀⢀⣠⠈⣿⣷⣶⣿⡏⠀⠀⠸⣿⣇⠀⠀
+⠀⠀⠀⠀⠀⢠⣿⣿⠁⠀⠀⠀⠀⠀⠀⣸⣏⣠⣤⣶⣿⡿⠿⠟⠛⠉⠀⠀⠀⠀⠀⠀⠀⣾⣿⠻⣿⣧⠹⣿⣆⠀⣿⡇⠸⣿⣿⣿⠿⠇⠸⣿⡏⢻⣿⣆⠀⠀⢿⣿⡀⠀
+⠀⠀⠀⠀⠀⢸⣿⡟⠀⠀⣀⣠⣴⣶⣿⣿⠿⠟⠋⠉⠀⢀⣠⣤⣶⣾⣧⠀⠀⠀⠀⠀⠀⣿⣿⠀⠈⣿⣧⠘⣿⣆⣿⣿⠀⢻⣿⡄⠀⠀⣀⢻⣿⡀⠙⣿⣷⠄⠘⣿⣧⠀
+⠀⠀⠀⢀⣀⣾⣿⣷⣾⡿⠿⠛⠋⠉⠀⠀⣤⣤⠀⢸⣿⡌⣿⣿⠋⠉⠁⠀⠀⠀⠀⠀⠀⠸⣿⣇⠀⢸⣿⡇⠘⣿⣾⣿⠀⠈⣿⣷⣾⣿⡿⠮⠛⠃⠀⢀⣀⣠⣤⣾⣿⠄
+⣴⣶⣾⡿⠿⠛⠛⠉⠁⠀⠀⠀⣶⣿⣆⠀⢹⣿⣧⣸⣿⣧⠸⣿⣦⣤⣶⣆⠀⠀⠀⠀⠀⠀⢻⣿⣄⢀⣿⡇⠀⠘⣿⣿⡆⠀⠘⠛⠉⠁⣀⣠⣤⣶⣾⣿⠿⠟⠛⠉⠁⠀
+⢹⣿⣇⠀⠀⠀⣴⣿⣿⣷⡄⠀⢹⡿⣿⣆⠈⣿⣿⣿⣿⢿⣆⢻⣿⠟⠋⠉⠀⠀⠀⠀⠀⠀⠀⠻⣿⣿⡿⠃⠀⠀⠀⠀⣀⣠⣴⣶⣿⣿⠿⠟⠋⢩⣿⣿⠀⠀⠀⠀⠀⠀
+⠀⢿⣿⡀⠀⠀⣿⣟⠈⠛⠋⠀⢸⣿⠈⣿⣆⠸⣿⣻⣿⡾⣿⡌⣿⣇⣀⣤⣴⡆⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣤⣶⣾⣿⠿⣿⠛⠉⠁⠀⠀⠀⠀⢸⣿⡟⠀⠀⠀⠀⠀⠀
+⠀⠸⣿⣧⠀⠀⢻⣿⠀⣶⣾⣧⠘⣿⣷⣾⣿⣆⢿⣧⠉⠁⢻⣧⢹⣿⡿⠿⠛⠃⠀⢀⣀⣤⣴⣶⡾⡿⠟⠋⠛⠉⠁⠀⣰⠏⠀⠀⠀⠀⠀⠀⠀⣿⣿⠇⠀⠀⠀⠀⠀⠀
+⠀⠀⢹⣿⡄⠀⠈⣿⣧⠙⠙⣿⡆⣿⣟⠉⠘⣿⣾⣿⡆⠀⠀⠛⠁⢀⣀⣠⣤⣶⣿⡿⠿⠛⠋⠁⠀⠀⠀⠀⠀⠀⠀⣴⠟⠀⠀⠀⠀⠀⠀⠀⣸⣿⡏⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⣿⣷⠀⠀⠘⣿⣷⣴⣿⡏⣿⡿⠀⠀⠈⠉⢀⣀⣠⣴⣶⣿⡿⠿⠛⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⡾⠋⠀⠀⠀⠀⠀⠀⠀⣰⣿⡟⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠸⣿⡆⠀⠀⠈⠛⠛⠋⠀⢀⣀⣤⣴⣶⣿⡿⠿⣿⣋⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⡾⠋⠀⠀⠀⠀⠀⠀⠀⠀⣼⣿⡿⠁⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⢻⣿⡄⢀⣀⣤⣴⣶⣿⠿⠿⠛⠋⠉⠀⠀⠀⠈⠙⠳⢦⣤⣀⣀⠀⠀⠀⠀⠀⢀⣀⣠⣤⠶⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⢀⣼⣿⡿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠈⣿⣿⡿⠿⠛⠙⢿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⠙⠛⠛⠛⠛⠉⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⣿⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢿⣿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣴⣿⣿⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠿⣿⣷⣦⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣾⣿⡿⠛⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠛⠿⢿⣿⣷⣦⣄⣀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⣤⣶⣿⣿⡿⠟⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⠻⠿⣿⣿⣿⣿⣷⣶⣶⣶⣾⣿⣿⣿⣿⡿⠿⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⠀⠉⠉⠉⠉⠉⠉⠉⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+''', 10000000000)
+
+def winning_image():
+    print_sl('''
+⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣀⢀⣀⣤⣴⣾⠿⠿⠿⠿⠟⠿⠟⠛⠻⠿⠿⠿⢿⣿⣷⣶⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⡤⠤⢤⣄⣀⢀⣤⣶⣿⣷⣽⣌⠙⠳⢭⣉⣁⢀⣀⣤⣤⣶⣶⣤⣤⣤⣄⡀⠀⠀⢿⣿⡟⠻⢿⣷⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⣆⠀⠀⠉⠙⠾⣝⠿⣉⣠⣿⡀⠀⠀⠙⣟⢿⠋⢩⡉⡛⠛⠛⠛⠻⢿⣿⣦⡀⠀⠉⠀⠀⠀⠈⢿⣿⣦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⡄⠀⠀⠀⠀⠈⠳⣝⢿⣼⠀⠀⠀⠀⠘⣟⣷⣺⢳⣹⣿⣷⣦⣤⣤⣬⣽⣿⣷⣤⡀⠀⠀⠀⠈⠛⣿⣧⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡇⠀⠀⠀⠀⠀⠀⠈⠻⠃⠀⠀⠀⠀⠀⠸⣮⠏⠀⢧⠉⠛⢿⣿⣿⣉⠉⠻⣿⣿⣿⣄⡀⠀⠀⠀⠻⢿⣿⣶⣄⠀⠀⠀⠀⠀⠀⠀
+⡇⠀⠀⠀⠀⠀⠀⣀⣀⣀⣀⣀⣀⠤⡾⡇⠀⠀⠀⠀⠀⢀⣀⣠⠤⠤⠤⣄⣀⠀⠠⠏⠀⠀⢸⡄⠀⠀⠉⠉⠛⣿⣆⠘⢿⣿⣿⣿⣿⣦⡀⠀⠀⠹⣏⠻⣿⣦⡀⠀⠀⠀⠀
+⡇⠀⠀⠀⠐⠻⣯⡁⠀⠀⠀⠀⠈⠉⠳⠃⠀⠀⢀⣤⠞⠋⠁⠀⠀⠀⠀⣀⡈⠳⣄⠀⠀⠀⢀⡇⠀⠀⠀⢀⠀⠘⠿⣧⠀⠻⣯⣙⠻⣿⣿⣶⣿⠆⠹⣆⠙⣿⣿⣦⡀⠀⠀
+⡇⠀⠀⠀⠀⠀⠀⠙⠲⣄⠀⠀⠀⠀⠀⠀⠀⣰⠏⠀⢀⣠⠴⠒⠋⠉⢉⣉⣉⣉⣻⢷⡀⠀⢸⣅⣀⡤⢖⣯⣤⣤⣤⣄⠀⠀⠈⣿⣧⣈⠻⣿⣿⣄⠀⠈⠀⠈⠻⣿⣷⡄⠀
+⡇⠀⠀⠀⠀⠀⠀⠀⠀⣾⢷⡀⠀⠀⠀⠀⣼⠁⣠⠞⢉⡤⠖⠚⠉⠉⠉⠉⠉⢀⣠⠬⢷⣄⠀⠀⠀⠀⣼⠙⢻⣿⣿⣿⣦⡀⠀⢻⣿⣿⣧⠈⢻⣿⣧⠀⣦⠀⠀⢿⣿⣿⠀
+⡇⠀⠀⠀⠀⠀⠀⠀⢰⣿⣯⣇⠀⠀⠀⣰⠇⠀⠓⠊⠁⣠⣤⣤⣀⠀⠀⢀⡾⠋⠀⠀⠀⠈⢳⡀⠀⢠⠇⠀⠀⣧⣽⣿⣿⣿⡆⠀⠙⣿⡌⠁⢸⣷⡙⣦⣿⡷⠀⠈⢿⣿⠀
+⡇⠀⠀⠀⣀⣀⢀⣠⣾⣛⣻⠼⠀⠀⠀⡿⠀⠀⢀⡴⠋⠀⠀⠀⠈⠳⡄⡾⠀⠀⢀⡤⠄⠀⠀⡇⠀⡞⠀⠀⡀⠈⠉⠉⣿⡿⠁⠀⠀⠻⠿⣦⡈⠙⣷⡘⢿⣄⠀⢰⣿⣿⠀
+⡇⠀⠀⠀⠉⠻⣍⠉⠀⠀⠀⠀⠀⠀⠀⡇⠀⠀⡼⠀⠀⠀⡆⠀⠀⠀⢱⢳⠀⠀⠀⠀⠀⠀⢠⡇⠞⠓⠒⣺⠁⠀⠀⢰⡯⠖⠋⠉⠉⠉⠉⠉⠙⠓⠺⢽⡀⠙⣆⠈⣿⣿⡄
+⡇⠀⠀⠀⠀⠀⠈⢳⣤⡀⠀⠀⠀⠀⠀⣇⠀⠀⢷⠀⠀⠀⠁⠀⠀⢀⡾⠈⠳⡤⣄⣀⡠⠴⣻⠀⠀⠀⢠⠏⢀⡤⠞⠉⠀⠀⢀⣀⣀⣀⣀⣀⣀⠀⠀⠀⠉⠳⣟⢰⣿⣿⣧
+⡇⠀⠀⠀⠀⠀⠀⢸⣷⣭⢗⣤⡤⠄⠀⢸⡀⠀⢈⠳⣄⣀⣀⣠⡴⠋⠀⣄⠀⢳⠠⠤⠶⠚⢹⡙⠲⣤⠏⢀⡞⠀⢀⣠⠴⠾⠭⠥⢤⣀⠀⠈⠉⠙⠲⢤⡀⠀⠈⠳⡽⣿⣿
+⡇⠀⠀⠀⠀⠀⠀⣼⣫⠞⠋⠀⠀⠀⠀⢘⣇⠀⠈⠓⠢⠤⠖⠚⠉⠀⠀⠘⣆⣈⡇⠀⠀⠀⠀⡇⣠⠇⢠⠎⠀⡴⠋⡥⠖⠋⠙⠒⢦⡀⠀⠀⠀⠀⢤⣀⡉⠳⡄⠀⢹⣹⡟
+⡇⠀⠀⠀⠀⠀⠰⣟⣒⡦⢤⣀⠀⠀⢰⠟⢻⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠀⠀⠀⠀⠀⡟⠁⢰⠃⢀⡞⠁⡼⠁⠀⠀⠀⠀⠀⠹⡄⠀⢀⣠⠤⠤⣍⡳⡝⡆⠀⢧⡇
+⡇⠀⠀⠀⠀⠀⠀⣿⣿⣿⣦⠈⠛⣦⠘⣆⠈⣧⠀⠀⢠⢇⣀⡤⢴⡖⠛⠛⠛⠛⠲⢤⡀⣶⠐⡇⠀⢸⡀⡞⠀⠀⢷⠀⠀⠛⠋⠀⠀⢰⠇⣰⠋⠀⠀⠀⠀⠙⣆⢹⡀⢸⠀
+⡇⠀⠀⠀⠀⠀⠀⢸⣿⣿⣿⠇⡼⠁⠀⠈⠉⢻⣧⠀⠘⢯⠙⡶⠋⠀⠀⠀⠀⠀⠀⠠⠞⠃⢠⡇⢀⡼⢻⠁⠀⠀⠈⠳⢤⣀⣀⣀⡴⠋⠀⡇⠀⠀⢠⣄⠀⠀⢸⠀⡇⢸⠀
+⡇⠀⠀⠀⠀⠀⠀⠀⢻⣿⡟⣼⣠⡴⢖⡚⠉⢿⣿⡳⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡞⠀⢸⡀⢸⠀⠀⠀⠀⠀⠀⠀⠀⠠⣄⡘⣦⠹⣄⠀⠀⠉⠀⢀⡞⠀⡇⡾⠀
+⡇⠀⠀⠀⠀⠀⠀⠀⠀⠙⢷⣯⣾⣷⡈⢿⡄⠻⠿⢿⣮⡷⣄⠀⠀⠀⠀⠀⠀⠀⠀⣠⡴⠋⠀⠀⠀⠙⠺⡄⠀⠀⠀⣀⣤⠶⡶⠦⣌⡉⠉⠀⠈⠙⠒⠒⠚⠉⠀⢸⢱⠇⠀
+⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⢿⣿⣿⣾⣿⡄⠀⠀⠙⠿⣶⣭⣒⣲⡤⠤⢶⣲⣯⣥⡀⠀⠀⠀⠀⠀⠀⢳⡀⠀⢰⣿⣿⣿⣿⣶⣦⣯⢷⡄⠀⠀⠀⠀⠀⠀⢠⣯⠏⠀⠀
+⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣿⣿⣿⣷⡦⠀⠀⠀⠈⠻⣿⣿⣷⣦⣤⣽⣿⣿⣷⣤⣤⣶⣶⣦⣤⡻⣄⠈⠉⠉⠉⠉⠉⠻⣿⣿⣿⠀⠀⠀⠀⠀⣠⠏⢸⠀⠀⠀
+⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠻⣿⣿⣷⣤⠀⠀⠀⠀⠈⠛⢿⣭⣝⡛⠛⠛⠻⠿⠿⠟⠛⠻⢿⣿⣮⣳⢦⣀⠀⠀⠀⠀⠈⠉⠁⠀⠀⢀⣠⠞⠓⠒⠋⠀⠀⠀
+⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⢿⣿⣦⡀⠀⠀⣀⣀⠀⠙⢿⣿⣷⣶⣶⣶⣶⣤⣄⣤⣴⣿⣿⡿⠓⠋⠙⠒⠦⠤⠤⠤⠤⣴⣺⠏⠀⠀⠀⠀⠀⠀⠀⠀
+⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠻⢿⣷⣤⣿⣿⣆⠀⠀⠈⠙⠛⠛⠛⠛⠛⠉⠉⠀⢀⣠⣤⣤⣴⣶⣿⣿⣿⣿⣿⠿⠟⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠙⠻⢿⣿⣿⣿⣿⣷⣤⣴⣿⣶⣾⣿⣷⣶⣿⣿⣿⣿⠿⠛⠛⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+''', 10000000000)
+
+
+
+#Difficulty
+print_sl('Please choose difficulty:\n', 300)
+print_sl('Easy - a lot of points', 300)
+print_sl('Medium - not many points (recommended)', 300)
+print_sl('Hard - lack of points + random event results\n', 300)
+diff_level = str(input('Difficulty level (Easy, Medium, Hard): '))
+
+while True:
+    if diff_level.upper() not in ('EASY', 'MEDIUM', 'HARD'):
+        print('Please enter the difficulty exactly as (Easy / Medium / Hard)!')
+    else:
+        break
+    diff_level = str(input('Difficulty level: '))
+
+
+
+# Introduction
+print('')
+print_sl('Hello, Morty! How are you doing? It is the day when your life will change...\nToday you will finally do it… You will ask Jessica out on a date!\nTry to find her at first, Morty.', 300)
+time.sleep(2)
+
+
+# Difficulty level grades
+if diff_level.upper() == 'EASY':
+    mental_health = 4
+    build_up = 4
+    game_progress = 4
+elif diff_level.upper() == 'MEDIUM':
+    mental_health = 3
+    build_up = 3
+    game_progress = 3
+elif diff_level.upper() == 'HARD':
+    mental_health = 2
+    build_up = 2
+    game_progress = 2
+    
+    
+# Game code
+
+while True:
+    if mental_health <= 0 or build_up <= 0 or game_progress <= 0: # The condition of losing
+        print('', 'Oh no, Morty...', 'You failed...', sep = '\n')
+        game_over()
+        time.sleep(10)
+        break
+
+# City map: choosing location
+    while True:
+        print('','Where would you like to go?', '1 - House', '2 - School', '3 - Family psychologist', sep = '\n')
+        
+        way = input_check(way, 3) # Choosing which location to visit
+
+        if way == 1: #House
+            print('','Which room?', '1 - Bedroom', '2 - Living room', '3 - Garage', '4 - Go back outside', sep = '\n')
+
+            way1 = input_check(way1, 4) # Choosing which room to enter
+                        
+        if way == 2: #School
+            print('','Where next?', '1 - Gym', '2 - Lockers', '3 - Go back outside', sep = '\n')
+
+            way2 = input_check(way2, 3) 
+            
+        if way1 == 4 or way2 == 3: # Moving back outside
+            way1 = 0
+            way2 = 0
+            continue
+        else:
+            break
+        
+# Gameplay: choosing action
+
+    if way == 1: # House
+        if way1 == 1: # Bedroom
+            print('', 'You are in your lovely bedroom! You can try to do Yoga or get something done in your bed.', '1 - Try to do Yoga', '2 - Get under the covers', '3 - Go back outside', sep = '\n')
+
+            action1_1 = input_check(action1_1, 3) # Choosing action in bedroom
+            
+            if action1_1 == 1: # Doing yoga
+                yoga()
+                watch_grades()
+            elif action1_1 == 2: # Go to the bed
+                bed()
+                watch_grades()
+            elif action1_1 == 3: # Moving back outside
+                continue
+                
+        elif way1 == 2: # Living room
+            print('', 'There is Jerry watching TV here. Would you like to ask him why isn’t he looking for a job?', '1 - Ask Jerry about job', '2 - Go back outside', sep = '\n')
+
+            action1_2 = input_check(action1_2, 2) # Choosing action in living room
+            
+            if action1_2 == 1: # Talk to Jerry
+                jerry()
+                watch_grades()
+            elif action1_2 == 2: # Move back outside
+                continue
+                
+        elif way1 == 3: # Garage
+            print('', 'Rick is working in the garage. He needs your help on his next scientific journey. But this time he gives you an opportunity to choose what trip you will go on!', '1 - Special seeds smuggling', '2 - Gladiator arena', '3 - Go back outside', sep = '\n')
+            
+            action1_3 = input_check(action1_3, 3) # Choosing action in garage
+            
+            if action1_3 == 1: # Seeds trip
+                seeds()
+                watch_grades()
+            elif action1_3 == 2: # Trip to the arena
+                arena()
+                watch_grades()
+            elif action1_3 == 3: # Move back outside
+                continue
+            
+    elif way == 2: # School
+        if way2 == 1: # Gym
+            print('', 'You can attend your PE lesson or get back outside:', '1 - Attend', '2 - Go back outside', sep = '\n')
+
+            action2_1 = input_check(action2_1, 2) # Choosing action in gym
+
+            if action2_1 == 1: # PE lesson
+                pe_lesson() 
+                watch_grades()
+            elif action2_1 == 2: # Move back outside
+                skip_pe()
+                watch_grades()
+                
+        elif way2 == 2: # Lockers
+            print('', 'Jessica must be here somewhere.', '1 - Try to ask her for a date', '2 - Go back outside', sep = '\n')
+
+            action2_2 = input_check(action2_2, 2) # Choosing action near by lockers
+
+            if action2_2 == 1:  # Date Jessica
+                if game_progress >= 8 and (0.3 * mental_health + 0.3 * build_up + 0.4 * game_progress) >= 9: # Ready
+                    if date_c == 0: # First date
+                        first_date()
+                        watch_grades()
+                    elif date_c == 1: # Second date
+                        print_sl("\nFinally, she agreed! You asked Jessica to come to your house in the evening.\nShe came at 8 pm.\nEverything was alright until you went for a bottle of wine...\nSomething went wrong and as a result Jessica realized the essence of time as an infinite entity...\nIn simple words the date failed...\n", 100)
+                        time.sleep(3)
+                        print_sl("Don't be upset, you are still invited to your python game project defending thanks to this story with Jessica!\nCongradulations!", 100)
+                        winning_image()
+                        time.sleep(10)
+                        break  
+                else: # Not ready
+                    print_sl("\nJessica won't agree dating with you if you are not invited to the defending of your python game final project.\nGirls like IT guys nowadays! (8, 9 or 10 for python game progress)\nBut you also must be fit enough and mentaly strong to date Jessica.\n(Your average grade on all your activities must be not less than 9!\nAverage grade = 0.3 * mental health + 0.3 * build up + 0.4 * game progress) ", 250)
+                    watch_grades()
+                    
+            elif action2_2 == 2: # Move back outside
+                continue
+                
+    elif way == 3: # Psychologist
+        print('', 'You are sitting at the door of your family psychologist and waiting for your turn.', "Rick is very nervous as he doesn't want to go on family therapy.", 'He talks something about money down the drain and offers his new development - a random pill.', 'It can solve all your problems.', 'Or may not...', '1 - Family therapy', '2 - Random pill', '3 - Go back outside', sep = '\n')
+
+        action3 = input_check(action3, 3) # Choosing action in the clinic
+
+        if action3 == 1: # Family therapy
+            therapy()
+            watch_grades()
+        elif action3 == 2: # Random pill
+            random_pill()
+            watch_grades()
+        elif action3 == 3: # Go back outside
+            continue
